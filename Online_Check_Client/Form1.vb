@@ -36,7 +36,9 @@ Public Class Form1
         End If
 
         'Dim con As New Connection("192.168.1.9")
+        Dim list As List(Of String) = XMLController.loadSettings()
 
+        tb_ip.Text = list(0)
 
         StartListener()
         InitConnection()
@@ -122,6 +124,8 @@ Public Class Form1
     End Sub
 
     Public Function InitConnection() As Boolean
+
+
 
         If ep_ip.GetError(tb_ip) = "" Then
             Dim con As New Connection(tb_ip.Text)
@@ -219,6 +223,10 @@ Public Class Form1
             If InitConnection() = True Then
                 MsgBox("Connection established and saved", MsgBoxStyle.OkOnly)
                 timer.Interval = timerTickTime
+                Dim list As New List(Of String)
+                list.Add(tb_ip.Text)
+                list.Add(timerTickTime.ToString())
+                XMLController.saveSettings(list)
             Else
                 MsgBox("Failed to connect to server", MsgBoxStyle.Exclamation)
                 timer.Interval = Int64.MaxValue
