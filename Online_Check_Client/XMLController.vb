@@ -1,11 +1,12 @@
 ﻿Imports System.Xml
 Public Class XMLController
 
+    'File name of XML settings file
     Shared settingsFileLocation As String = "ClientSettings.xml"
 
-    'Dim xmlReader As XmlReader '= XmlReader.Create("ClientList.xml")
-    Shared ClientListXmlDoc As New XmlDocument()
     Shared SettingsXmlDoc As New XmlDocument()
+
+    'On load, check if XML file exists, if it does, load it, otherwise create a new one with default values, then load it
     Sub New()
 
         If System.IO.File.Exists(settingsFileLocation) Then
@@ -38,11 +39,15 @@ Public Class XMLController
 
 
 
-
+    'Loads settings from XML file to the program's memory
+    'Settings are saved as a list of strings
+    'TODO: make them a Dictionary instead
+    'Node 0 is the IP
+    'Node 1 is the Refresh Rate in seconds
     Public Shared Function loadSettings() As List(Of String)
+
+
         Dim list As New List(Of String)
-
-
 
         Try
             Dim doc As XmlDocument
@@ -74,12 +79,15 @@ Public Class XMLController
 
     End Function
 
+
+    'save settings from list of strings to XML file
+    'Settings are saved as a list of strings
+    'TODO: make them a Dictionary instead
+    'Node 0 is the IP
+    'Node 1 is the Refresh Rate in seconds
     Public Shared Sub saveSettings(list As List(Of String))
 
         Dim doc As XDocument = XDocument.Load(settingsFileLocation)
-
-
-
 
         Dim node As XElement = doc.Descendants("Setting").FirstOrDefault()
 
@@ -90,10 +98,6 @@ Public Class XMLController
             doc.Element("Settings").Add(currEle)
             node = currEle
         End If
-
-        'Console.WriteLine("START SETTING OR CHANGING NEW CONNECTION ___")
-        'Console.WriteLine(connection.ToString())
-        'Console.WriteLine("END   SETTING OR CHANGING NEW CONNECTION ___")
 
 
         'updated current connection settings

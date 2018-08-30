@@ -1,23 +1,24 @@
 ﻿Imports System.IO
 Imports System.Net.Sockets
 
+
+'Creates an object to use as the current connection
+'Automatically will try to connect to the chosen Server
 Public Class Connection
     Dim serverNotFoundMessage As String = "Server not found"
     Dim conIP As String
     Dim conPort As Integer = 20
 
     Dim connected As Boolean = False
+
+
+
+    'Connects to the server and tells it the client is online
     Sub New(ip As String)
         conIP = ip
 
 
         Try
-            '  Console.Write("Enter IP to connect to: ")
-            '   Dim conIP As String = Console.ReadLine()
-            '   Console.WriteLine()
-            '    Console.Write("Enter port to connect to: ")
-            '   Dim conPort As Integer = Integer.Parse(Console.ReadLine())
-            '  Console.WriteLine()
             Dim client As TcpClient = New TcpClient(conIP, conPort)
             Console.WriteLine("Trying to connect to " & conIP & ":" & conPort)
 
@@ -39,17 +40,13 @@ Public Class Connection
                 Console.WriteLine("closing client")
                 client.Close()
             End Try
-
-            Console.WriteLine("")
-            Console.WriteLine("All connections closed, Enter to turn off console")
-
-            ' Console.Read()
         Catch ex As Exception
             connected = False
         End Try
 
     End Sub
 
+    'return the connection's status
     Public Function getConnected() As Boolean
         Return connected
     End Function
